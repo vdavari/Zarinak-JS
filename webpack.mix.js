@@ -11,7 +11,7 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('src/js/checkout.js', 'assets/js')
+mix.js('src/js/checkout.js', 'assets')
     .setPublicPath('assets')
     .setResourceRoot('../');
 
