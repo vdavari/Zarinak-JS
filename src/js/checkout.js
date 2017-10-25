@@ -47,7 +47,20 @@
                 }
             };
 
-            if (isMobile.any()) {
+            let navigator = navigator.userAgent;
+            let isAndroid = (
+                (
+                    navigator.indexOf('Mozilla/5.0') > -1
+                    && navigator.indexOf('Android 4.3 ') > -1
+                    && navigator.indexOf('AppleWebKit') > -1
+                )
+                && !(navigator.indexOf('Chrome') > -1)
+            );
+
+            if (
+                isMobile.any()
+                || isAndroid
+            ) {
                 window.location.href = this.targetUrl + this.authority + '/' + this.iframeId;
             } else {
                 let iframe = document.createElement('iframe');
