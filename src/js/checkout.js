@@ -1,13 +1,13 @@
-
-(function(window){
+(function (window) {
     class Zarinak {
         constructor() {
             this.authority = '';
             this.body = document.body;
             this.targetUrl = 'https://www.zarinpal.com/pg/StartPay/';
             this.iframeId = 'Zarinak';
+            this.zarinGate = 'ZarinGate';
 
-            if (window.addEventListener){
+            if (window.addEventListener) {
                 addEventListener('message', this.receiveMessage, false);
             } else {
                 attachEvent('onmessage', this.receiveMessage);
@@ -19,7 +19,7 @@
         }
 
         open() {
-            if (this.authority == '' || this.authority == null || this.authority == undefined) {
+            if (this.authority === '' || this.authority === null || this.authority === undefined) {
                 console.log('Authority is empty');
                 return false;
             }
@@ -30,45 +30,58 @@
             }
 
             let isMobile = {
+                /**
+                 * @return {boolean}
+                 */
                 Windows() {
                     return /IEMobile/i.test(navigator.userAgent);
                 },
+                /**
+                 * @return {boolean}
+                 */
                 Android() {
                     return /Android/i.test(navigator.userAgent);
                 },
+                /**
+                 * @return {boolean}
+                 */
                 BlackBerry() {
                     return /BlackBerry/i.test(navigator.userAgent);
                 },
+                /**
+                 * @return {boolean}
+                 */
                 iOS() {
                     return /iPhone|iPad|iPod/i.test(navigator.userAgent);
                 },
+                /**
+                 * @return {boolean}
+                 */
                 any() {
                     return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Windows());
                 }
             };
 
-            let navigator = navigator.userAgent;
-            let isAndroid = (
+            let isOldAndroid = (
                 (
-                    navigator.indexOf('Mozilla/5.0') > -1
-                    && navigator.indexOf('Android 4.3 ') > -1
-                    && navigator.indexOf('AppleWebKit') > -1
+                    navigator.userAgent.indexOf('Mozilla/5.0') > -1
+                    && navigator.userAgent.indexOf('Android 4.3 ') > -1
+                    && navigator.userAgent.indexOf('AppleWebKit') > -1
                 )
-                && !(navigator.indexOf('Chrome') > -1)
+                && !(navigator.userAgent.indexOf('Chrome') > -1)
             );
 
-            if (
-                isMobile.any()
-                || isAndroid
-            ) {
+            if (isMobile.any()) {
                 window.location.href = this.targetUrl + this.authority + '/' + this.iframeId;
+            } else if (isOldAndroid) {
+                window.location.href = this.targetUrl + this.authority + '/' + this.zarinGate;
             } else {
                 let iframe = document.createElement('iframe');
                 iframe.src = this.targetUrl + this.authority + '/' + this.iframeId;
                 iframe.id = this.iframeId;
                 iframe.name = this.iframeId;
                 iframe.frameBorder = "0";
-                iframe.allowTransparency =  "true";
+                iframe.allowTransparency = "true";
                 iframe.style.backgroundColor = 'transparent';
                 iframe.style.zIndex = '99999999';
                 iframe.style.display = 'block';
@@ -93,25 +106,25 @@
         close(href) {
             let iframe = document.getElementById(this.iframeId);
             iframe.parentElement.removeChild(iframe);
-            if (href != null) {
+            if (href !== null) {
                 window.location = href;
             }
         }
 
         receiveMessage(event) {
-            if (event.data.action == 'Close') {
+            if (event.data.action === 'Close') {
                 window.Zarinak.close(event.data.href);
             }
         }
 
     }
 
-    if (typeof window.Zarinak == 'undefined') {
+    if (typeof window.Zarinak === 'undefined') {
         window.Zarinak = new Zarinak();
-        var checkout = document.getElementById('zarinak-checkout');
-        if (checkout != null) {
-            var authority = checkout.getAttribute('data-authority');
-            if (authority != null) {
+        let checkout = document.getElementById('zarinak-checkout');
+        if (checkout !== null) {
+            let authority = checkout.getAttribute('data-authority');
+            if (authority !== null) {
                 window.Zarinak.setAuthority(authority);
                 window.Zarinak.open();
             }
