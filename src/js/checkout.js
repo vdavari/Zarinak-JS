@@ -65,7 +65,7 @@
             let isOldAndroid = (
                 (
                     navigator.userAgent.indexOf('Mozilla/5.0') > -1
-                    && navigator.userAgent.indexOf('Android 4.3 ') > -1
+                    && navigator.userAgent.indexOf('Android 4.3') > -1
                     && navigator.userAgent.indexOf('AppleWebKit') > -1
                 )
                 && !(navigator.userAgent.indexOf('Chrome') > -1)
