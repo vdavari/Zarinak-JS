@@ -6,6 +6,7 @@
             this.targetUrl = 'https://www.zarinpal.com/pg/StartPay/';
             this.iframeId = 'Zarinak';
             this.zarinGate = 'ZarinGate';
+            this.callBack = null;
 
             if (window.addEventListener) {
                 addEventListener('message', this.receiveMessage, false);
@@ -16,6 +17,10 @@
 
         setAuthority(input) {
             this.authority = input;
+        }
+
+        setCallBack(callback) {
+            this.callBack = callback;
         }
 
         open() {
@@ -106,6 +111,14 @@
         close(href) {
             let iframe = document.getElementById(this.iframeId);
             iframe.parentElement.removeChild(iframe);
+
+            if (this.callBack !== null) {
+                let parsed = this.parseURL(href);
+                this.callBack(parsed.searchObject['Authority'], parsed.searchObject['Status']);
+
+                return;
+            }
+
             if (href !== null) {
                 window.location = href;
             }
@@ -117,6 +130,29 @@
             }
         }
 
+        parseURL(url) {
+            var parser = document.createElement('a'),
+                searchObject = {},
+                queries, split, i;
+            // Let the browser do the work
+            parser.href = url;
+            // Convert query string to object
+            queries = parser.search.replace(/^\?/, '').split('&');
+            for (i = 0; i < queries.length; i++) {
+                split = queries[i].split('=');
+                searchObject[split[0]] = split[1];
+            }
+            return {
+                protocol: parser.protocol,
+                host: parser.host,
+                hostname: parser.hostname,
+                port: parser.port,
+                pathname: parser.pathname,
+                search: parser.search,
+                searchObject: searchObject,
+                hash: parser.hash
+            };
+        }
     }
 
     if (typeof window.Zarinak === 'undefined') {
