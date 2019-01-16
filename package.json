@@ -1,8 +1,7 @@
 {
-  "name": "Zarinak-JS",
+  "name": "@zarinpal/zarinak",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "src/js/checkout.js",
   "scripts": {
     "dev": "npm run development",
     "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -23,8 +22,10 @@
     "url": "https://github.com/ZarinPal/Zarinak-JS/issues"
   },
   "homepage": "https://github.com/ZarinPal/Zarinak-JS#readme",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "cross-env": "^5.0.5",
     "laravel-mix": "^1.4.5"
-  }
+  },
+  "description": ""
 }
