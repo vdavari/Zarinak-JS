@@ -29,10 +29,10 @@
                 return false;
             }
 
-            if (isNaN(this.authority)) {
-                console.log('Authority is invalid');
-                return false;
-            }
+//             if (isNaN(this.authority)) {
+//                 console.log('Authority is invalid');
+//                 return false;
+//             }
 
             let isMobile = {
                 /**
